@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <string.h>
+#include "algorithms.c""
+
 
 void userInput() {
     //There are no strings in C so every phrase is a character array
     char user_input[50];
 
-    printf ("Please enter your name. ");
+    printf("Please enter your name. ");
     fgets(user_input, 50, stdin);
 
-    printf ("Your name is:\t");
+    printf("Your name is:\t");
 
     for (int i = 0; i < strlen(user_input); i++) {
         printf("%c", user_input[i]);
@@ -19,11 +21,12 @@ void userInput() {
 void functionExample() {
     char phrase[] = "Hello World";
 
-    for (int i = 0 ; i < strlen(phrase) ; i++) {
+    for (int i = 0; i < strlen(phrase); i++) {
         printf("%c", phrase[i]);
     }
     printf("\n");
 }
+
 // structs are similar to classes except there are no methods.
 // with structs there are only members(related variables).
 // structs can be accessed by their name.
@@ -36,9 +39,9 @@ struct Player {
 };
 
 int main() {
-
     userInput();
     functionExample();
+    algorithms();
 
     // C allows you to assign integer to decimals and vice versa.
     // be careful when mixing data types as some of the value may be lost.
@@ -48,9 +51,9 @@ int main() {
     var3 = var1 + var2;
     var1 = var1 + var2;
 
-    printf( "The decimal value is:\t");
+    printf("The decimal value is:\t");
     printf("%f\n", var3);
-    printf( "The integer value is:\t");
+    printf("The integer value is:\t");
     printf("%d\n", var1);
     printf("\n");
 
@@ -58,7 +61,7 @@ int main() {
     struct Player player2;
 
     // . is the member access operator.
-    strcpy(player1.player_name, "John" );
+    strcpy(player1.player_name, "John");
     player1.player_id = 1;
     player1.player_level = 10;
     player1.player_score = 200;
@@ -68,7 +71,7 @@ int main() {
     player2.player_level = 10;
     player2.player_score = 220;
 
-    printf( "Player Name:\t");
+    printf("Player Name:\t");
     printf("%s\n", player1.player_name);
     printf("Player Id:\t");
     printf("%d\n", player1.player_id);
@@ -89,7 +92,6 @@ int main() {
     printf("\n");
 
 
-
     int number = 20;
 
     // * is known as the de-reference.
@@ -102,5 +104,4 @@ int main() {
     printf("The address of the pointer is %p\n", &pointer);
 
     return 0;
-
 }
