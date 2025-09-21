@@ -1,6 +1,83 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+void merge(int *leftarray, int leftSize, int *rightarray, int rightSize, int *array, int size) {
+    int i = 0, l = 0, r = 0;
+
+    while (r < rightSize && l < leftSize) {
+        if (leftarray[l] < rightarray[r]) {
+            array[i] = leftarray[l];
+            i++;
+            l++;
+        }
+        else {
+            array[i] = rightarray[r];
+            i++;
+            r++;
+        }
+    }
+    while (l < leftSize) {
+        array[i] = leftarray[l];
+        i++;
+        l++;
+    }
+    while (r < rightSize) {
+        array[i] = rightarray[r];
+        i++;
+        r++;
+    }
+
+}
+
+// Merge sort is significantly faster than selection and insertion sort. However, merge sort requires the use of more memory.
+// There are two reasons for this I can think of one is that merge sort uses recursion which builds up the stack memory.
+// The other reason I could think of is that merge sort has to dynamically allocate memory to subarrays which pulls memory from the heap.
+// Merge sort would typically be used to sort large list of data. If you had smaller list like this it would proably be best to use
+// the other two algorithms.
+
+// a fundamental limitation of C know as array decay will keep you from finding the length of an array passed
+// as an argument. So just pass the length of the array.
+void mergeSort(int *array, int size) {
+
+
+    // best case
+    if (size <= 1) {
+        return;
+    }
+
+    int middle = size / 2;
+
+    // malloc is used to dynamically allocate memory for the two subarrays.
+   int *leftarray = malloc(sizeof(int) *  middle);
+    int *rightarray = malloc(sizeof(int) * (size - middle));
+
+    if (leftarray == NULL || rightarray == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < middle; i++){
+        leftarray[i] = array[i];
+    }
+    for ( int i = middle; i < size; i++) {
+        rightarray[i - middle] = array[i];
+    }
+    // do not try to use size of to find the size of the right array and leftarray
+    // these to are pointers and as such they point to the first element in the array.
+    //int size_of_right = sizeof(rightarray) / sizeof(rightarray[0]); // this will cause errors
+    //int size_of_left = sizeof(leftarray) / sizeof(leftarray[0]);
+
+    // the size was already determined with middle and size - middle.
+    mergeSort(leftarray, middle);
+    mergeSort(rightarray, size - middle);
+    merge(leftarray, middle, rightarray, size - middle, array, size);
+}
+
+// selection sort works by comparing two elements that are next to each other if the next element in the
+// array is larger than the first element then their positions in the array are swapped.
+// for a more detailed explanation look at the selection sort function.
+
 void selectionSort(int *array, int size) {
 
     // if statement says element at j position is smaller than element at min position
@@ -20,6 +97,9 @@ void selectionSort(int *array, int size) {
     }
     printf("\n");
 }
+
+// insertion sort works by starting as the second element in the array and comparing it to the element before it.
+// this pattern continues until the entire array is sorted.
 
 void insertionSort(int *array, int size) {
 
@@ -92,16 +172,19 @@ int algorithms() {
     }
     printf("\n");
 
-    // selection sort works by comparing two elements that are next to each other if the next element in the
-    // array is larger than the first element then their positions in the array are swapped.
-    // for a more detailed explanation look at the selection sort function.
-
     // comment out one of the sorting algorithms to see the other working
-    printf("%s\n", "Selection Sort");
+   printf("%s\n", "Selection Sort");
    selectionSort(unsorted_array, size);
 
     printf("%s\n", "Insertion Sort");
     insertionSort(unsorted_array, size);
+
+    printf("%s\n", "Merge Sort");
+    mergeSort(unsorted_array, size);
+
+    for (int i = 0; i < sizeof(unsorted_array) / sizeof(unsorted_array[0]); i++) {
+        printf("%d ", unsorted_array[i]);
+    }
 
     printf("%s\n", "Binary Search");
     binarySearch(unsorted_array, size, value_to_find);
